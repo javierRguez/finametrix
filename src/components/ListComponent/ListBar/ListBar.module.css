@@ -1,0 +1,37 @@
+.app-bar-container {
+  background-color: #465e73 !important;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+  background-color: #93aec561;
+  margin-left: 0;
+  width: 80%;
+}
+.search:hover {
+  background-color: #93aec5;
+}
+
+.search-icon {
+  display: flex;
+  margin-left: 10px;
+  margin-right: 10px;
+  position: absolute;
+  pointer-events: none;
+  color: white;
+}
+.input-root {
+  margin-left: 40px;
+  width: 90%;
+}
+.input-input {
+  width: 100% !important;
+  color: white !important;
+}
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+}

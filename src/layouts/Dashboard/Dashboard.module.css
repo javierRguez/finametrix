@@ -1,0 +1,10 @@
+.dashboard-container {
+  height: 100vh;
+}
+.list-component-container {
+  background-color: #bfd9c3;
+  width: 100%;
+}
+.detail-component-container {
+  background-color: #f2f2f2;
+}
