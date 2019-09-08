@@ -12,7 +12,7 @@ const options = ["Market Cap", "Precio de cierre", "Volumen"];
 
 export default function SplitButton() {
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = React.useRef();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   function handleClick() {
@@ -43,6 +43,7 @@ export default function SplitButton() {
         aria-owns={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
+        ref={anchorRef}
       >
         <SortIcon style={{ color: "white" }} />
       </IconButton>

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import btcReducer from "reducers/btcReducer";
+import cryptos from "reducers/bitcoinReducer";
 
 export default combineReducers({
-  btcState: btcReducer
+  cryptosInfo: cryptos
 });

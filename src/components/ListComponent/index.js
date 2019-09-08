@@ -1,6 +1,7 @@
 import React from "react";
 import ListBar from "./ListBar/ListBar";
 import Grid from "@material-ui/core/Grid";
+import ListContent from "components/ListComponent/ListContent/ListContent";
 
 export class index extends React.Component {
   render() {
@@ -8,7 +9,7 @@ export class index extends React.Component {
       <Grid container alignItems="stretch">
         <Grid item xs={12}>
           <ListBar></ListBar>
-          <div>list</div>
+          <ListContent></ListContent>
         </Grid>
       </Grid>
     );
