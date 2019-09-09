@@ -1,5 +1,6 @@
 .app-bar-container {
   background-color: #465e73 !important;
+  max-height: 64px !important;
 }
 
 .search {

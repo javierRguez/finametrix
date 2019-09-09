@@ -8,20 +8,22 @@ import MenuList from "@material-ui/core/MenuList";
 import SortIcon from "@material-ui/icons/SwapVert";
 import IconButton from "@material-ui/core/IconButton";
 
-const options = ["Market Cap", "Precio de cierre", "Volumen"];
+const options = [
+  { value: "Market Cap", key: "marketCap" },
+  { value: "Precio de cierre", key: "closePrice" },
+  { value: "Volumen", key: "volume" }
+];
 
-export default function SplitButton() {
+export default function SplitButton(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  function handleClick() {
-    alert(`You clicked ${options[selectedIndex]}`);
-  }
+  const { getSelectedOption } = props;
 
   function handleMenuItemClick(event, index) {
     setSelectedIndex(index);
     setOpen(false);
+    getSelectedOption(index);
   }
 
   function handleToggle() {
@@ -60,13 +62,13 @@ export default function SplitButton() {
             <Paper id="menu-list-grow">
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
-                  {options.map((option, index) => (
+                  {options.map(option => (
                     <MenuItem
-                      key={option}
-                      selected={index === selectedIndex}
-                      onClick={event => handleMenuItemClick(event, index)}
+                      key={option.key}
+                      selected={option.key === selectedIndex}
+                      onClick={event => handleMenuItemClick(event, option.key)}
                     >
-                      {option}
+                      {option.value}
                     </MenuItem>
                   ))}
                 </MenuList>

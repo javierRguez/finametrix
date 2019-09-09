@@ -1,0 +1,4 @@
+.list-content-container {
+  overflow-y: scroll;
+  height: calc(100vh - 64px);
+}

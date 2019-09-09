@@ -35,7 +35,6 @@ export default function cryptosReducer(state = initialState, action) {
         error: action.payload.error,
         cryptos: []
       };
-
     default:
       return state;
   }

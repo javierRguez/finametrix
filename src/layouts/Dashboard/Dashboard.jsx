@@ -12,7 +12,6 @@ class Dashboard extends React.Component {
   componentWillUnmount() {}
   componentDidUpdate(e) {}
   render() {
-    const { error, loading, cryptos } = this.props;
     return (
       <React.Fragment>
         <Grid

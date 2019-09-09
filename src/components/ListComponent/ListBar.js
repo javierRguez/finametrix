@@ -1,14 +1,21 @@
 import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import styles from "./ListBar.module.css";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import SortIcon from "@material-ui/icons/SwapVert";
 import CustomPopper from "components/CustomPopper/CustomPopper";
+import { connect } from "react-redux";
+import { filterText } from "actions/filterActions";
+import { sortBy } from "actions/filterActions";
 
 export class ListBar extends Component {
+  onChange = e => {
+    this.props.dispatch(filterText(e.target.value));
+  };
+  getSelectedOption = value => {
+    this.props.dispatch(sortBy(value));
+  };
   render() {
     return (
       <AppBar position="relative" className={styles["app-bar-container"]}>
@@ -18,6 +25,7 @@ export class ListBar extends Component {
               <SearchIcon />
             </div>
             <InputBase
+              onChange={e => this.onChange(e)}
               type="search"
               classes={{
                 root: styles["input-root"],
@@ -25,11 +33,13 @@ export class ListBar extends Component {
               }}
             ></InputBase>
           </div>
-          <CustomPopper></CustomPopper>
+          <CustomPopper
+            getSelectedOption={this.getSelectedOption}
+          ></CustomPopper>
         </Toolbar>
       </AppBar>
     );
   }
 }
 
-export default ListBar;
+export default connect()(ListBar);

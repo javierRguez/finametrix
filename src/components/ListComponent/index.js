@@ -1,7 +1,7 @@
 import React from "react";
-import ListBar from "./ListBar/ListBar";
+import ListBar from "components/ListComponent/ListBar";
 import Grid from "@material-ui/core/Grid";
-import ListContent from "components/ListComponent/ListContent/ListContent";
+import ListContent from "components/ListComponent/ListContent";
 
 export class index extends React.Component {
   render() {
