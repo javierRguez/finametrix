@@ -9,69 +9,103 @@ import eosJson from "assets/localCoinInfo/eos.json";
 import cardanoJson from "assets/localCoinInfo/cardano.json";
 import moneroJson from "assets/localCoinInfo/monero.json";
 
+//True => get local data from json; false => fetch data from api
+const localData = false;
+
 const API_KEY = "YXG7ABQSNY5QX9IB";
 const URL_ROOT =
   "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY";
+
 function getBitcoinInfo() {
-  return fetch(`${URL_ROOT}&symbol=BTC&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return bitcoinJson;
+  if (localData) {
+    return bitcoinJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=BTC&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getEthereumInfo() {
-  return fetch(`${URL_ROOT}&symbol=ETH&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return ethereumJson;
+  if (localData) {
+    return ethereumJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=ETH&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getRippleInfo() {
-  return fetch(`${URL_ROOT}&symbol=XRP&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return rippleJson;
+  if (localData) {
+    return rippleJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=XRP&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 
 function getEosInfo() {
-  return fetch(`${URL_ROOT}&symbol=EOS&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return eosJson;
+  if (localData) {
+    return eosJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=EOS&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getStellarInfo() {
-  return fetch(`${URL_ROOT}&symbol=XLM&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return stellarJson;
+  if (localData) {
+    return stellarJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=XLM&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getLitecoinInfo() {
-  return fetch(`${URL_ROOT}&symbol=LTC&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return litecoinJson;
+  if (localData) {
+    return litecoinJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=LTC&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getCardanoInfo() {
-  return fetch(`${URL_ROOT}&symbol=ADA&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return cardanoJson;
+  if (localData) {
+    return cardanoJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=ADA&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getMoneroInfo() {
-  return fetch(`${URL_ROOT}&symbol=XMR&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return moneroJson;
+  if (localData) {
+    return moneroJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=XMR&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getBinancecoinInfo() {
-  return fetch(`${URL_ROOT}&symbol=BNB&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return binancecoinJson;
+  if (localData) {
+    return binancecoinJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=BNB&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getNeoInfo() {
-  return fetch(`${URL_ROOT}&symbol=NEO&market=EUR&apikey=${API_KEY}`)
-    .then(handleErrors)
-    .then(res => res.json());
-  //return neoJson;
+  if (localData) {
+    return neoJson;
+  } else {
+    return fetch(`${URL_ROOT}&symbol=NEO&market=EUR&apikey=${API_KEY}`)
+      .then(handleErrors)
+      .then(res => res.json());
+  }
 }
 function getImageUrl(cryptoCode) {
   switch (cryptoCode) {
@@ -163,94 +197,117 @@ export function fetchCryptos() {
     //let bitcoinCash = getBitcoinCashInfo();
     let cryptos = [];
     let failCryptos = [];
-    Promise.all([
-      bitcoin
-        .then(result => {
+    if (localData) {
+      Promise.all([
+        bitcoin,
+        ethereum,
+        ripple,
+        eos,
+        stellar,
+        litecoin,
+        cardano,
+        monero,
+        binancecoin,
+        neo
+      ])
+        .then(json => {
+          for (let crypto of json) {
+            cryptos.push(getCryptoInfo(crypto));
+          }
+          dispatch(fetchCryptosSuccess(cryptos));
+          return cryptos;
+        })
+        .catch(error => dispatch(fetchCryptosFailure(error)));
+    } else {
+      Promise.all([
+        bitcoin
+          .then(result => {
+            if (result.hasOwnProperty("Meta Data")) {
+              cryptos.push(getCryptoInfo(result));
+            } else {
+              failCryptos.push("Bitcoin");
+            }
+          })
+          .catch(err => console.log("prueba de er")),
+
+        ethereum.then(result => {
           if (result.hasOwnProperty("Meta Data")) {
             cryptos.push(getCryptoInfo(result));
           } else {
-            failCryptos.push("Bitcoin");
+            failCryptos.push("Ethereum");
+          }
+        }),
+        ripple.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Ripple");
+          }
+        }),
+        eos.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("EOS");
+          }
+        }),
+        stellar.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Stellar");
+          }
+        }),
+        litecoin.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Litecoin");
+          }
+        }),
+        cardano.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Cardano");
+          }
+        }),
+        monero.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Monero");
+          }
+        }),
+        binancecoin.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Binancecoin");
+          }
+        }),
+        neo.then(result => {
+          if (result.hasOwnProperty("Meta Data")) {
+            cryptos.push(getCryptoInfo(result));
+          } else {
+            failCryptos.push("Neo");
           }
         })
-        .catch(err => console.log("prueba de er")),
+      ])
+        .then(json => {
+          if (failCryptos.length > 0) {
+            dispatch(fetchCryptosFailure(cryptos, failCryptos));
+          } else {
+            dispatch(fetchCryptosSuccess(cryptos));
+          }
 
-      ethereum.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Ethereum");
-        }
-      }),
-      ripple.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Ripple");
-        }
-      }),
-      eos.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("EOS");
-        }
-      }),
-      stellar.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Stellar");
-        }
-      }),
-      litecoin.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Litecoin");
-        }
-      }),
-      cardano.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Cardano");
-        }
-      }),
-      monero.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Monero");
-        }
-      }),
-      binancecoin.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Binancecoin");
-        }
-      }),
-      neo.then(result => {
-        if (result.hasOwnProperty("Meta Data")) {
-          cryptos.push(getCryptoInfo(result));
-        } else {
-          failCryptos.push("Neo");
-        }
-      })
-    ])
-      .then(json => {
-        if (failCryptos.length > 0) {
-          dispatch(fetchCryptosFailure(cryptos, failCryptos));
-        } else {
-          dispatch(fetchCryptosSuccess(cryptos));
-        }
-
-        return cryptos;
-      })
-      .catch(error => {
-        console.log("error dentro");
-        dispatch(fetchCryptosFailure(cryptos));
-      });
+          return cryptos;
+        })
+        .catch(error => {
+          console.log("error dentro");
+          dispatch(fetchCryptosFailure(cryptos));
+        });
+    }
   };
 }
 
