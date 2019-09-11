@@ -5,11 +5,45 @@ import Avatar from "@material-ui/core/Avatar";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import { getSelectedCrypto, clearSelectedCrypto } from "actions/cryptoActions";
 export class ListItem extends React.Component {
+  getNumberBySort() {
+    switch (this.props.sortBy) {
+      case "marketCap":
+        return this.props.data.marketCap.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD"
+        });
+      case "closePrice":
+        return this.props.data.closePrice.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD"
+        });
+      case "volume":
+        return this.props.data.volume.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD"
+        });
+
+      default:
+        break;
+    }
+  }
   render() {
     return (
-      <Card style={{ margin: "5px" }}>
-        <CardActionArea>
+      <Card
+        style={
+          this.props.data.code === this.props.selectedCode
+            ? { margin: "5px", backgroundColor: "#a4b3a7", transition: ".5s" }
+            : { margin: "5px" }
+        }
+      >
+        <CardActionArea
+          onClick={async () => {
+            await this.props.dispatch(clearSelectedCrypto());
+            this.props.dispatch(getSelectedCrypto(this.props.data));
+          }}
+        >
           <CardContent
             style={{
               display: "flex",
@@ -45,9 +79,7 @@ export class ListItem extends React.Component {
                 component="p"
                 gutterBottom={false}
               >
-                {`$${parseInt(this.props.data.closePrice)
-                  .toString()
-                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")} USD`}
+                {this.getNumberBySort()}
               </Typography>
             </div>
           </CardContent>

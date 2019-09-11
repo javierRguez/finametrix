@@ -17,7 +17,7 @@ const options = [
 export default function SplitButton(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState("marketCap");
   const { getSelectedOption } = props;
 
   function handleMenuItemClick(event, index) {

@@ -9,8 +9,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetchCryptos());
   }
-  componentWillUnmount() {}
-  componentDidUpdate(e) {}
+
   render() {
     return (
       <React.Fragment>

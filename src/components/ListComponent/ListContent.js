@@ -9,7 +9,12 @@ export class ListContent extends Component {
     return (
       <div className={styles["list-content-container"]}>
         {this.props.cryptos.map(crypto => (
-          <ListItem key={crypto.code} data={crypto}></ListItem>
+          <ListItem
+            key={crypto.code}
+            data={crypto}
+            sortBy={this.props.sortBy}
+            selectedCode={this.props.selectedCode}
+          ></ListItem>
         ))}
       </div>
     );
@@ -17,6 +22,8 @@ export class ListContent extends Component {
 }
 const mapStateToProps = state => {
   return {
+    selectedCode: state.cryptosInfo.selectedCrypto.code,
+    sortBy: state.filter.sortBy,
     cryptos: getVisibleCryptos(state.cryptosInfo.cryptos, {
       text: state.filter.text,
       sortBy: state.filter.sortBy
